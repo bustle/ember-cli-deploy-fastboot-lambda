@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "ember-fastboot-server": "0.6.2"
+    "fastboot": "1.0.0-rc.0"
   }
 }

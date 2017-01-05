@@ -1,21 +1,39 @@
 var path = require('path');
-var FastBootServer = require('ember-fastboot-server');
+var FastBoot = require('fastboot');
 var outputPath = 'fastboot-dist';
 var appName = 'bustle';
 
-var server = new FastBootServer({
+var app = new FastBoot({
   distPath: 'fastboot-dist'
 });
 
-function insertIntoIndexHTML(res) {
-  return server.insertIntoIndexHTML(res.title, res.body, res.head);
-}
-
 exports.handler = function(event, context) {
-  server.app.visit(event.path, { request: { get: function() {} }, response: {} })
-    .then(insertIntoIndexHTML)
-    .then(context.succeed)
-    .catch(function() {
-      context.fail(new Error('500 AWS Lambda Error'))
+  var options = {
+    request: {
+      headers: {
+      },
+      get: function() {}
+    },
+    response: {}
+  };
+
+  if (event.cookie) {
+    options.request.headers.cookie = event.cookie;
+  }
+
+  var statusCode, location;
+
+  app.visit(event.path, options)
+    .then(function(result) {
+      statusCode = result.statusCode;
+      location = result.headers.location;
+      return result.html();
+    })
+    .then(function(html) {
+      context.succeed({
+        html: html,
+        statusCode: statusCode,
+        location: location
+      });
     });
 };
