@@ -9,7 +9,9 @@
   "scripts": {
     "build": "ember build",
     "start": "ember server",
-    "test": "ember try:testall"
+    "test": "ember try:testall",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "repository": "https://github.com/bustlelabs/ember-cli-deploy-fastboot-lambda",
   "engines": {
@@ -49,11 +51,12 @@
   ],
   "dependencies": {
     "aws-sdk": "^2.2.39",
-    "ember-cli-babel": "^5.1.5",
+    "ember-cli-babel": "^6.0.0",
     "ember-cli-deploy-plugin": "^0.2.2",
     "fs-promise": "^0.5.0",
     "glob": "^7.0.0",
-    "rsvp": "^3.2.1"
+    "rsvp": "^3.2.1",
+    "snyk": "^1.88.0"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
@@ -61,5 +64,6 @@
       "ember-cli-deploy-lightning-pack",
       "ember-cli-deploy-build"
     ]
-  }
+  },
+  "snyk": true
 }
